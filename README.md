@@ -21,6 +21,7 @@ This app features an 8-segment wheel that users can spin to win prizes. The back
 ### Frontend (React Native + TypeScript)
 
 **Technology Stack:**
+
 - React Native with Expo
 - TypeScript for type safety
 - Zustand for state management
@@ -28,12 +29,36 @@ This app features an 8-segment wheel that users can spin to win prizes. The back
 - NativeWind for styling
 - React Native Reanimated for smooth animations
 
-**State Management:**
-- **Zustand**: Chosen for its simplicity, small bundle size, and excellent TypeScript support
-- Global state includes wheel configuration, user spins, cooldown status, and authentication state
-- Local component state for UI-specific interactions
+**State Management Choice: Zustand**
+
+We chose **Zustand** over React Query, Redux Toolkit, or other alternatives for the following reasons:
+
+1. **Simplicity**: Zustand has minimal boilerplate compared to Redux Toolkit, making it easier to maintain and understand
+2. **Bundle Size**: At ~2KB gzipped, Zustand is significantly smaller than Redux Toolkit (~15KB) or React Query (~13KB)
+3. **TypeScript Support**: Excellent TypeScript integration with automatic type inference
+4. **Performance**: Efficient re-renders with built-in selector optimization
+5. **Persistence**: Built-in persistence middleware for offline support
+6. **DevTools**: Excellent debugging experience with Redux DevTools integration
+
+**Why not React Query?**
+
+- React Query is primarily for server state management and caching, but our app has significant client-side state (wheel animations, UI state, user preferences)
+- We need real-time updates and complex state interactions that are better handled by a general state management solution
+
+**Why not Redux Toolkit?**
+
+- Overkill for our use case - we don't need the complex action/reducer patterns
+- Larger bundle size and more boilerplate code
+- Zustand provides the same benefits with less complexity
+
+**Networking Strategy:**
+
+- Direct Firebase SDK calls for real-time data
+- Cloud Functions for server-authoritative game logic
+- No additional networking layer needed due to Firebase's robust SDK
 
 **Key Components:**
+
 - `SpinWheel`: Main wheel component with animation logic
 - `CooldownTimer`: Real-time countdown display
 - `SpinHistory`: List of past spins
@@ -42,15 +67,18 @@ This app features an 8-segment wheel that users can spin to win prizes. The back
 ### Backend (Firebase)
 
 **Firestore Collections:**
+
 - `wheelConfig`: Wheel segment configuration (8 segments, weights, colors)
 - `spins`: User spin history with timestamps and results
 - `users`: (Optional) User profile data
 
 **Cloud Functions:**
+
 - `spinWheel`: Server-authoritative spin with cooldown enforcement
 - `getHistory`: Fetch user's spin history
 
 **Security Rules:**
+
 - Authenticated users can only access their own data
 - Wheel config is read-only for authenticated users
 - Spins can only be created through Cloud Functions
@@ -152,6 +180,7 @@ npm test
 ```
 
 Tests cover:
+
 - Weighted random selection algorithm
 - Cooldown enforcement
 - Idempotency handling
@@ -192,16 +221,19 @@ firebase/
 ## 🔒 Security & Fairness
 
 ### Server-Authoritative Design
+
 - All spin results determined by Cloud Functions
 - Client cannot manipulate outcomes
 - Idempotency prevents duplicate spins
 
 ### Cooldown Enforcement
+
 - Server-side cooldown validation
 - ClientRequestId prevents race conditions
 - Graceful error handling for cooldown violations
 
 ### Data Integrity
+
 - Firestore security rules enforce data access
 - Timestamp-based validation
 - User isolation (users can only access their own data)
@@ -209,16 +241,19 @@ firebase/
 ## 🎨 UX/UI Features
 
 ### Smooth Animations
+
 - React Native Reanimated for 60fps animations
 - Wheel spins to exact server-determined position
 - Haptic feedback on spin completion
 
 ### Accessibility
+
 - VoiceOver/TalkBack support
 - High contrast mode compatibility
 - Screen reader friendly labels
 
 ### Error Handling
+
 - Network error recovery
 - Graceful degradation
 - User-friendly error messages
@@ -226,13 +261,16 @@ firebase/
 ## 🔧 Configuration
 
 ### Wheel Configuration
+
 The wheel supports 8 segments with configurable:
+
 - Labels (prize names)
 - Weights (probability distribution)
 - Colors (visual customization)
 - Cooldown duration
 
 ### Environment-Specific Settings
+
 - Development: Firebase emulators
 - Production: Live Firebase project
 - Staging: Separate Firebase project
@@ -240,11 +278,13 @@ The wheel supports 8 segments with configurable:
 ## 📊 Performance Considerations
 
 ### Frontend Optimization
+
 - Lazy loading of components
 - Memoization of expensive calculations
 - Efficient re-renders with Zustand
 
 ### Backend Optimization
+
 - Firestore indexing for queries
 - Cloud Function cold start optimization
 - Efficient data structures
@@ -252,47 +292,34 @@ The wheel supports 8 segments with configurable:
 ## 🚀 Deployment
 
 ### Firebase Functions
+
 ```bash
 cd firebase
 firebase deploy --only functions
 ```
 
 ### React Native App
+
 - iOS: Submit to App Store via Expo
 - Android: Submit to Google Play Store via Expo
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
-
-## 📄 License
-
-This project is proprietary and confidential.
 
 ## 🆘 Troubleshooting
 
 ### Common Issues
 
 **Firebase Emulator Connection**
+
 - Ensure emulators are running before starting the app
 - Check that environment variables point to emulator URLs
 
 **Build Errors**
+
 - Clear Metro cache: `npx expo start --clear`
 - Reset iOS simulator: `xcrun simctl erase all`
 
 **Authentication Issues**
+
 - Verify Firebase project configuration
 - Check security rules in Firestore
 
-## 📞 Support
-
-For technical support or questions, please contact the development team.
-
----
-
-**Built with ❤️ using React Native and Firebase**
