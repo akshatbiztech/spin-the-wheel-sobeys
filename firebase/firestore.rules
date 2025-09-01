@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public wheel configuration (read-only for clients)
+    match /wheelConfig/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // User spins (write only from server; read by owner)
+    match /spins/{spinId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.uid;
+      allow write: if false; // only Cloud Functions (Admin SDK) write
+    }
+  }
+}
