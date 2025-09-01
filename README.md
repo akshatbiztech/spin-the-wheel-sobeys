@@ -1,5 +1,7 @@
 # Spin the Wheel - Sobeys Mobile App
 
+🎥 **[Watch Demo](https://drive.google.com/file/d/1NFXcbf2OE03Wij4PM4t_ADCQPLhWe9ml/view?usp=sharing)**
+
 A production-quality React Native mobile application with Firebase backend that implements a server-authoritative spin wheel game with cooldown mechanics, history tracking, and smooth animations.
 
 ## 🎯 Overview
@@ -303,7 +305,6 @@ firebase deploy --only functions
 - iOS: Submit to App Store via Expo
 - Android: Submit to Google Play Store via Expo
 
-
 ## 🆘 Troubleshooting
 
 ### Common Issues
@@ -322,4 +323,3 @@ firebase deploy --only functions
 
 - Verify Firebase project configuration
 - Check security rules in Firestore
-
